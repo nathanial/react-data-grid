@@ -108,15 +108,14 @@ var Row = React.createClass({
 
   getCellValue(key: number | string): any {
     var val;
-    if(key === 'select-row'){
+    if(key === 'select-row') {
       return this.props.isSelected;
     } else if (typeof this.props.row.get === 'function') {
       val = this.props.row.get(key);
+    } else {
+      val = this.props.row[key];
     }
-    else {
-      var val = this.props.row[key];
-    }
-    return !val ? '' : val;
+    return val;
   },
 
   getRowData(){
@@ -135,6 +134,7 @@ var Row = React.createClass({
   setScrollLeft(scrollLeft: number) {
     this.props.columns.forEach( (column, i) => {
       if (column.locked) {
+        if(!this.refs[i]) return;
         this.refs[i].setScrollLeft(scrollLeft);
       }
     });
